@@ -34,10 +34,10 @@ CREATE TABLE [dbo].AirbnbStaging (
 
 
 BULK INSERT AirbnbStaging
-FROM 'path_to_csv_file'
+FROM 'C:\Users\justi\OneDrive\Desktop\Data_Practice\Airbnb_Analysis\data\Airbnb_Data.csv'
 WITH (
-    FIRSTROW = 2,               
-    FIELDTERMINATOR = ',',      
+    FORMAT = 'CSV',
+    FIRSTROW = 2,                  
     ROWTERMINATOR = '\n',        
     TABLOCK,
     CODEPAGE = '65001'
