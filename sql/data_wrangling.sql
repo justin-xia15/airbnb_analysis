@@ -310,3 +310,39 @@ SET [review_score] = 3
 WHERE [review_score] IS NULL
 AND [num_reviews] > 0
 
+-- calculated host listings is the number of listings the host has, should be a minumum of 1
+ALTER TABLE AirbnbStaging
+ALTER COLUMN calculated_host_listings_count INT
+
+SELECT DISTINCT calculated_host_listings_count FROM AirbnbStaging
+
+UPDATE AirbnbStaging
+SET [calculated_host_listings_count] = 1
+WHERE [calculated_host_listings_count] IS NULL
+
+-- availability_365 is the number of days the listing is available over the next 365 days 
+-- max value should be 365 and min value should be 0
+ALTER TABLE AirbnbStaging
+ALTER COLUMN availability_365 INT
+
+SELECT DISTINCT availability_365 FROM AirbnbStaging
+
+-- change negative values to 0 and values > 365 to 365
+UPDATE AirbnbStaging
+SET [availability_365] = 0
+WHERE [availability_365] < 0
+
+UPDATE AirbnbStaging
+SET [availability_365] = 365
+WHERE [availability_365] > 365
+
+-- replace NULL values for house_rules with 
+UPDATE AirbnbStaging
+SET [house_rules] = ''
+WHERE [house_rules] IS NULL
+
+-- remove license column as only two rows have a value
+SELECT * FROM AirbnbStaging WHERE license IS NOT NULL
+
+ALTER TABLE AirbnbStaging
+DROP COLUMN IF EXISTS license
